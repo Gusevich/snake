@@ -19,14 +19,6 @@ function drawScore() {
 }
 drawScore();
 
-/*
-setInterval(() => {
-    ctx.clearRect(10, 10, 380, 15);
-    drawScore();
-    return score++;
-}, 100);
-*/
-
 function drawBorder() {
     ctx.fillStyle = 'Gray';
     ctx.fillRect(0, 0, width, blockSize);
@@ -45,7 +37,16 @@ function gameOver() {
     ctx.textBaseline = "middle";
     ctx.fillText("Game over", width / 2, height / 2);
 }
-gameOver();
+
+let circle = function (x, y, radius, fillCircle) {
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+    if (fillCircle) {
+        ctx.fill();
+    } else {
+        ctx.stroke();
+    }
+};
 
 let Block = function (col, row) {
     this.col = col;
@@ -57,4 +58,15 @@ Block.prototype.drawSquare = function (color) {
     let y = this.row * blockSize;
     ctx.fillStyle = color;
     ctx.fillRect(x, y, blockSize, blockSize);
+};
+
+Block.prototype.drawCircle = function (color) {
+    let centerX = this.col * blockSize + blockSize / 2;
+    let centerY = this.row * blockSize + blockSize / 2;
+    ctx.fillStyle = color;
+    circle(centerX, centerY, blockSize / 2, true);
+};
+
+Block.prototype.equal = function (otherBlock) {
+  return this.col === otherBlock.col && this.row === otherBlock.row;
 };
