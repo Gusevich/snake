@@ -19,11 +19,13 @@ function drawScore() {
 }
 drawScore();
 
+/*
 setInterval(() => {
     ctx.clearRect(10, 10, 380, 15);
     drawScore();
     return score++;
 }, 100);
+*/
 
 function drawBorder() {
     ctx.fillStyle = 'Gray';
@@ -44,3 +46,15 @@ function gameOver() {
     ctx.fillText("Game over", width / 2, height / 2);
 }
 gameOver();
+
+let Block = function (col, row) {
+    this.col = col;
+    this.row = row;
+};
+
+Block.prototype.drawSquare = function (color) {
+    let x = this.col * blockSize;
+    let y = this.row * blockSize;
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, blockSize, blockSize);
+};
