@@ -27,11 +27,8 @@ function drawScore() {
     ctx.fillText("Score: " + score, blockSize, blockSize);
 }
 
-/*drawScore();
-drawBorder();*/
-
 function gameOver() {
-    // clearInterval(intervalid);
+    clearInterval(intervalId);
     ctx.font = "60px Courier";
     ctx.fillStyle = "Black";
     ctx.textAlign = "center";
@@ -78,6 +75,7 @@ let Snake = function () {
         new Block(6, 5),
         new Block(5, 5)
     ];
+
     this.direction = 'right';
     this.nextDirection = 'right';
 };
@@ -92,6 +90,8 @@ Snake.prototype.move = function () {
     let head = this.segments[0];
     let newHead;
 
+    this.direction = this.nextDirection;
+
     if(this.direction === 'right') {
         newHead = new Block(head.col + 1, head.row);
     } else if(this.direction === 'down') {
@@ -99,7 +99,7 @@ Snake.prototype.move = function () {
     } else if(this.direction === 'left') {
         newHead = new Block(head.col - 1, head.row);
     } else if(this.direction === 'up'){
-        newHead = new Block(head.col, head.row = 1);
+        newHead = new Block(head.col, head.row - 1);
     }
     if(this.checkCollision(newHead)) {
         gameOver();
@@ -116,7 +116,7 @@ Snake.prototype.move = function () {
     }
 };
 
-Snake.prototype.checkCollision = function () {
+Snake.prototype.checkCollision = function (head) {
     let leftCollision = (head.col === 0);
     let topCollision = (head.row === 0);
     let rightCollision = (head.col === widthInBlocks - 1);
@@ -164,6 +164,15 @@ Apple.prototype.move = function () {
 
 let snake = new Snake();
 let apple = new Apple();
+
+let intervalId = setInterval(function () {
+    ctx.clearRect(0, 0, width, height);
+    drawScore();
+    snake.move();
+    snake.draw();
+    apple.draw();
+    drawBorder();
+}, 100);
 
 let directions = {
     37: 'left',
